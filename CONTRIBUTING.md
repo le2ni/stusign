@@ -32,8 +32,22 @@ Unknown packet IDs are not permission to write guessed payloads. New features ne
 
 ## Publishing
 
-Keep the version in `package.json` and its entry in `CHANGELOG.md` in sync. `pnpm pack` builds a local tarball for installation in a consuming application. To publish a version, use `pnpm publish --access public` from the repository checkout with a maintainer npm account.
+Publishing a GitHub release runs the `Publish` workflow. It checks out the release's tagged commit, validates the version, runs all checks and publishes the built archive to npm with provenance. Draft releases and tag pushes alone do not publish.
 
-The `prepublishOnly` hook runs the full check suite and `prepack` rebuilds the output. CI validates changes without publishing. See [npm lifecycle documentation](https://docs.npmjs.com/cli/v11/using-npm/scripts/).
+Configure **Trusted Publisher → GitHub Actions** once in the npm package settings:
+
+| Setting              | Value         |
+| -------------------- | ------------- |
+| Organization or user | `le2ni`       |
+| Repository           | `stusign`     |
+| Workflow filename    | `publish.yml` |
+| Environment          | Leave blank   |
+| Allow `npm publish`  | Enabled       |
+
+The workflow uses OIDC authentication; no npm token secret is required. See [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/).
+
+Update `package.json` and `CHANGELOG.md`, commit and push, then publish a GitHub release whose tag matches the package version, such as `v0.1.1` (or `0.1.1`). Stable versions publish to `latest`. For a prerelease, use a version such as `0.2.0-rc.1` and mark the GitHub release as a prerelease; it publishes to `next`. A mismatched version or prerelease flag fails before publishing. Each release needs a new version; published npm versions cannot be overwritten.
+
+`pnpm pack` builds a local tarball. Manual publishing remains available through `pnpm publish --access public --publish-branch main` with a maintainer npm account. Its `prepublishOnly` hook runs the full check suite and `prepack` rebuilds the output. The release workflow runs these checks before publishing its archive.
 
 MIT licensing applies to this implementation. Preserve the LICENSE and NOTICE files. Dependencies retain their own licenses.

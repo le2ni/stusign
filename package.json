@@ -2,6 +2,14 @@
   "name": "stusign",
   "version": "0.1.0",
   "description": "Typed Wacom STU device control, WebHID and Web Serial capture, image transfer and signature exports.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/le2ni/stusign.git"
+  },
+  "homepage": "https://github.com/le2ni/stusign#readme",
+  "bugs": {
+    "url": "https://github.com/le2ni/stusign/issues"
+  },
   "main": "./dist/index.mjs",
   "scripts": {
     "build": "tsdown",
