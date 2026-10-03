@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>StuSign quick start</title>
+    <style>
+      body {
+        font:
+          16px system-ui,
+          sans-serif;
+        max-width: 52rem;
+        margin: 3rem auto;
+        padding: 0 1rem;
+      }
+      button,
+      label {
+        margin-right: 0.75rem;
+      }
+      output {
+        display: block;
+        margin: 1.5rem 0;
+      }
+      img {
+        display: block;
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Capture a signature</h1>
+    <p>This example uses plaintext capture. It saves no data to a server or browser storage.</p>
+    <label><input id="serial" type="checkbox" /> Tablet is in USB COM mode</label>
+    <button id="connect">Connect and sign</button>
+    <button id="finish" disabled>Finish</button>
+    <button id="cancel" disabled>Cancel</button>
+    <output id="status" aria-live="polite">Connect a tablet to begin.</output>
+    <img id="preview" alt="Captured signature" />
+    <a id="download" download="signature.svg" hidden>Download SVG</a>
+    <script type="module" src="./build/app.js"></script>
+  </body>
+</html>

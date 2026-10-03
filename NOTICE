@@ -1,0 +1,9 @@
+StuSign is an independent implementation for Wacom STU devices.
+Wacom and STU are trademarks of Wacom. No affiliation or endorsement is implied.
+
+Public documentation and samples were consulted for protocol facts. Wacom SDK
+source, SDK binaries and device firmware are not redistributed by this project.
+Protocol sources and qualification boundaries are recorded in docs/protocol-evidence.md.
+
+Runtime dependencies @noble/ciphers and fflate are MIT-licensed and remain
+external package dependencies. Their own license notices apply.

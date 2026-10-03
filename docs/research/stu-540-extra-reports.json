@@ -1,0 +1,465 @@
+{
+  "schemaVersion": 1,
+  "researchDate": "2026-09-27",
+  "scope": "Observed feature-report IDs absent from the public STU catalogue; not a supported command registry.",
+  "model": {
+    "modelName": "STU-540",
+    "firmwareMajor": 1,
+    "firmwareMinor": 8,
+    "secureIc": 0,
+    "secureIcVersion": [0, 0, 0, 0]
+  },
+  "usbVendorId": "0x056a",
+  "usbProductId": "0x00a8",
+  "lengthConvention": "Payload bytes exclude the report ID; source native buffers usually include it.",
+  "counts": {
+    "publicCatalogueIds": 57,
+    "advertisedFeatureIds": 79,
+    "cataloguedFeatureIds": 42,
+    "extraFeatureIds": 37,
+    "fixedSizeCandidates": 9,
+    "variableFormatCandidates": 3,
+    "nameOnlyCandidates": 3,
+    "unresolvedMeanings": 22
+  },
+  "evidenceLevels": {
+    "F": "Cross-device fixed-size candidate; STU-540 semantics unverified.",
+    "V": "Cross-device variable-format candidate; observed capacity fits; STU-540 parameters unverified.",
+    "N": "Cross-device enum name only; no exercised serializer in inspected fwupd device code.",
+    "U": "Unresolved meaning on STU-540."
+  },
+  "localEvidence": {
+    "recordedFeatureDescriptor": {
+      "path": "docs/research/stu-540-hid-report-sizes.json",
+      "note": "Only model, firmware and report lengths retained; no device identifier, pen data or session notes."
+    },
+    "publicCatalogue": {
+      "path": "src/protocol/catalogue.ts"
+    }
+  },
+  "sources": {
+    "fwupdEnum": {
+      "url": "https://github.com/fwupd/fwupd/blob/5ca4290924f2a51bf9e624f149ea41b58a27b0bc/plugins/wacom-usb/fu-wacom-usb.rs",
+      "sha256": "c1f8e2026345bc7e868b2e477fb94946316f6a631ada4a08c2988fdc8cccb4f4"
+    },
+    "fwupdDevice": {
+      "url": "https://github.com/fwupd/fwupd/blob/5ca4290924f2a51bf9e624f149ea41b58a27b0bc/plugins/wacom-usb/fu-wacom-usb-device.c",
+      "sha256": "dee28fdf4dbb79abc0e4e9b8654052d5943cfe68a3cddbfbec78e430d25770e5"
+    },
+    "fwupdProvenance": {
+      "url": "https://github.com/fwupd/fwupd/blob/5ca4290924f2a51bf9e624f149ea41b58a27b0bc/plugins/wacom-usb/README.md",
+      "sha256": "ac7860dd2b78a96ce40095e229228dcb42b21517deb1f8a6d7fb1ebb3b07e664"
+    },
+    "fwupdDeviceList": {
+      "url": "https://github.com/fwupd/fwupd/blob/5ca4290924f2a51bf9e624f149ea41b58a27b0bc/plugins/wacom-usb/wacom-usb.quirk",
+      "sha256": "eb49082683a1984a098ec08f63236f4a541830b25ed4a25201c73c8e40f6749e"
+    },
+    "fwupdOriginalHeader": {
+      "url": "https://github.com/fwupd/fwupd/blob/1.2.2/plugins/wacom-usb/fu-wac-common.h",
+      "sha256": "6f30138e339aa8ff4ed9a9a3c7638e8c6d2ce79c511d42f2a5e88ea36c89bcd7"
+    },
+    "wacom430vQuery": {
+      "url": "https://developer-support.wacom.com/hc/en-us/articles/9354494770967-STU-Serial-Connection"
+    },
+    "wacomQuerySource": {
+      "url": "https://github.com/Wacom-Developer/stu-sdk-samples/blob/0749f46dd0b3d6f37c25adbbc7212c441a875af0/samples/cpp/query.cpp",
+      "sha256": "861653a6cee5b7f63f8fe3c3a75a788e4d94b1b36eaba2f4e0679ba6d7f74fb6"
+    },
+    "wacomPublicWrapper": {
+      "url": "https://github.com/Wacom-Developer/stu-sdk-sigcaptx-samples/blob/52e5413992b47dde7287b8f13b6f8fbbf0a05620/samples/demobuttons/wgssStuSdk.js",
+      "sha256": "6d3875d975c1bc1ba0ba951f682733b59421a693f98496f8a2657cf19ff55600"
+    },
+    "wacomHistoricalBrowser": {
+      "url": "https://github.com/Wacom-Developer/signature-sdk-js/blob/d427fda472880b24fd01ebec5b2a774e0063e5ca/sigCaptDialog/libs/stu_capture/stu-sdk.min.js",
+      "sha256": "4138b1c3cd7f55933c5efd6c49149a283f998ffc99679ed775a7d60073c7306e"
+    },
+    "wacomOldNativeDll": {
+      "url": "https://github.com/Wacom-Developer/stu-sdk-samples/blob/0749f46dd0b3d6f37c25adbbc7212c441a875af0/extra%20samples/csharp/TestDemoButtons-SxS/wgssSTU.dll",
+      "sha256": "aa237918731e8a660f4a205fe88a77d2207515d249828d1bdf69d9b9e2e32ce3"
+    },
+    "independentCommandMap": {
+      "url": "https://github.com/telecomadm1145/WacomFirmwareTool/blob/160f994426d76d66bdad5897f9bb158e992844ec/src/WacomFirmwareTool/Wacom/WacomProtocol.cs",
+      "sha256": "e2500c9b9faeadfab44ee2ee943ae42b42d02f4da29f8957ca33b0fcc545dfec"
+    },
+    "independentFirmwareClient": {
+      "url": "https://github.com/telecomadm1145/WacomFirmwareTool/blob/160f994426d76d66bdad5897f9bb158e992844ec/src/WacomFirmwareTool/Wacom/WacomFirmwareClient.cs",
+      "sha256": "ca4926f20d5f0f1a87822123fb930491c5863e901150b5cfbf3ed4650ad61eb7"
+    }
+  },
+  "reports": [
+    {
+      "id": "0x60",
+      "payloadBytes": 1,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor"]
+    },
+    {
+      "id": "0xa0",
+      "payloadBytes": 4,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "wacom430vQuery", "wacomQuerySource"],
+      "stu430vExamplePayloadBytes": 4
+    },
+    {
+      "id": "0xa2",
+      "payloadBytes": 4,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "wacom430vQuery", "wacomQuerySource"],
+      "stu430vExamplePayloadBytes": 4
+    },
+    {
+      "id": "0xa3",
+      "payloadBytes": 16,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "wacom430vQuery", "wacomQuerySource"],
+      "stu430vExamplePayloadBytes": 16
+    },
+    {
+      "id": "0xab",
+      "payloadBytes": 11,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "wacom430vQuery", "wacomQuerySource"],
+      "stu430vExamplePayloadBytes": 11
+    },
+    {
+      "id": "0xad",
+      "payloadBytes": 12,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor"]
+    },
+    {
+      "id": "0xae",
+      "payloadBytes": 1,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor"]
+    },
+    {
+      "id": "0xaf",
+      "payloadBytes": 1,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor"]
+    },
+    {
+      "id": "0xb0",
+      "payloadBytes": 1,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor"]
+    },
+    {
+      "id": "0xb2",
+      "payloadBytes": 2,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "wacom430vQuery", "wacomQuerySource"],
+      "stu430vExamplePayloadBytes": 2
+    },
+    {
+      "id": "0xb4",
+      "payloadBytes": 2,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "wacom430vQuery", "wacomQuerySource"],
+      "stu430vExamplePayloadBytes": 2
+    },
+    {
+      "id": "0xb5",
+      "payloadBytes": 10,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "wacom430vQuery", "wacomQuerySource"],
+      "stu430vExamplePayloadBytes": 10
+    },
+    {
+      "id": "0xb6",
+      "payloadBytes": 2,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor"]
+    },
+    {
+      "id": "0xb7",
+      "payloadBytes": 100,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor"]
+    },
+    {
+      "id": "0xb8",
+      "payloadBytes": 2,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor"]
+    },
+    {
+      "id": "0xb9",
+      "payloadBytes": 13,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor"]
+    },
+    {
+      "id": "0xcc",
+      "payloadBytes": 2,
+      "candidateName": "SwitchToFlashLoader",
+      "evidenceLevel": "F",
+      "sourceDirection": "set",
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "fwupdEnum", "fwupdDevice"]
+    },
+    {
+      "id": "0xd0",
+      "payloadBytes": 8,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "independentCommandMap"],
+      "unverifiedIndependentLogicalCommand": 0
+    },
+    {
+      "id": "0xd1",
+      "payloadBytes": 260,
+      "candidateName": "ReadBlockData",
+      "evidenceLevel": "N",
+      "sourceDirection": "get",
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "fwupdEnum"],
+      "caveat": "GET enum only in fwupd; independent client assumes four prefix bytes then data. Not verified on STU-540."
+    },
+    {
+      "id": "0xd2",
+      "payloadBytes": 260,
+      "candidateName": "WriteBlock",
+      "evidenceLevel": "V",
+      "sourceDirection": "set",
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "fwupdEnum", "fwupdDevice"],
+      "compatibleFormula": "4 + dataCapacity; observed dataCapacity = 256; actual configured write size not read."
+    },
+    {
+      "id": "0xd3",
+      "payloadBytes": 4,
+      "candidateName": "EraseBlock",
+      "evidenceLevel": "F",
+      "sourceDirection": "set",
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "fwupdEnum", "fwupdDevice"]
+    },
+    {
+      "id": "0xd4",
+      "payloadBytes": 4,
+      "candidateName": "SetReadAddress",
+      "evidenceLevel": "N",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "fwupdEnum"],
+      "caveat": "fwupd enum comment says GET; independent client sends SET. Direction unresolved; no exercised fwupd serializer."
+    },
+    {
+      "id": "0xd5",
+      "payloadBytes": 4,
+      "candidateName": "GetStatus",
+      "evidenceLevel": "F",
+      "sourceDirection": "get",
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "fwupdEnum", "fwupdDevice"]
+    },
+    {
+      "id": "0xd6",
+      "payloadBytes": 4,
+      "candidateName": "UpdateReset",
+      "evidenceLevel": "F",
+      "sourceDirection": "set",
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "fwupdEnum", "fwupdDevice"]
+    },
+    {
+      "id": "0xd7",
+      "payloadBytes": 8,
+      "candidateName": "WriteWord",
+      "evidenceLevel": "N",
+      "sourceDirection": "set",
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "fwupdEnum"],
+      "caveat": "SET enum only in fwupd; eight-byte field layout is not established."
+    },
+    {
+      "id": "0xd8",
+      "payloadBytes": 12,
+      "candidateName": "GetParameters",
+      "evidenceLevel": "F",
+      "sourceDirection": "get",
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "fwupdEnum", "fwupdDevice"]
+    },
+    {
+      "id": "0xd9",
+      "payloadBytes": 2560,
+      "candidateName": "GetFlashDescriptor",
+      "evidenceLevel": "V",
+      "sourceDirection": "get",
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "fwupdEnum", "fwupdDevice"],
+      "compatibleFormula": "10 * entryCapacity; observed entryCapacity = 256; actual flash-block count not read."
+    },
+    {
+      "id": "0xda",
+      "payloadBytes": 1028,
+      "candidateName": "GetChecksums",
+      "evidenceLevel": "V",
+      "sourceDirection": "get",
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "fwupdEnum", "fwupdDevice"],
+      "compatibleFormula": "4 + 4 * entryCapacity; observed entryCapacity = 256; actual flash-block count not read."
+    },
+    {
+      "id": "0xdb",
+      "payloadBytes": 6,
+      "candidateName": "SetChecksumForBlock",
+      "evidenceLevel": "F",
+      "sourceDirection": "set",
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "fwupdEnum", "fwupdDevice"]
+    },
+    {
+      "id": "0xdc",
+      "payloadBytes": 2,
+      "candidateName": "CalculateChecksumForBlock",
+      "evidenceLevel": "F",
+      "sourceDirection": "set",
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "fwupdEnum", "fwupdDevice"]
+    },
+    {
+      "id": "0xdd",
+      "payloadBytes": 4,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "independentCommandMap"],
+      "unverifiedIndependentLogicalCommand": 14
+    },
+    {
+      "id": "0xde",
+      "payloadBytes": 4,
+      "candidateName": "WriteChecksumTable",
+      "evidenceLevel": "F",
+      "sourceDirection": "set",
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "fwupdEnum", "fwupdDevice"]
+    },
+    {
+      "id": "0xdf",
+      "payloadBytes": 34,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "independentCommandMap"],
+      "unverifiedIndependentLogicalCommand": 16
+    },
+    {
+      "id": "0xe0",
+      "payloadBytes": 1,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "independentCommandMap"],
+      "unverifiedIndependentLogicalCommand": 17
+    },
+    {
+      "id": "0xe1",
+      "payloadBytes": 2,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": [
+        "recordedFeatureDescriptor",
+        "independentCommandMap",
+        "independentFirmwareClient"
+      ],
+      "unverifiedIndependentLogicalCommand": 18,
+      "unverifiedIndependentClaim": "Two-byte checksum-block selector; no inspected STU trace or vendor definition."
+    },
+    {
+      "id": "0xe2",
+      "payloadBytes": 2,
+      "candidateName": "GetCurrentFirmwareIdx",
+      "evidenceLevel": "F",
+      "sourceDirection": "get",
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "fwupdEnum", "fwupdDevice"]
+    },
+    {
+      "id": "0xe3",
+      "payloadBytes": 2,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "sourceDirection": null,
+      "stu540BehaviorVerified": false,
+      "evidence": ["recordedFeatureDescriptor", "independentCommandMap"],
+      "unverifiedIndependentLogicalCommand": 20
+    }
+  ],
+  "additionalInputReports": [
+    {
+      "id": "0xb1",
+      "payloadBytes": 39,
+      "candidateName": null,
+      "evidenceLevel": "U",
+      "stu540BehaviorVerified": false,
+      "observedEmitting": null,
+      "evidence": "Saved input descriptor only; no captured payload or semantic assignment."
+    }
+  ],
+  "constraints": [
+    "No additional HID reports were sent during this investigation.",
+    "No firmware maintenance command or raw report is enabled by this inventory.",
+    "Candidate names and sourceDirection describe other implementations; they are not STU-540 compatibility guarantees.",
+    "The unknown input report is not included in the 37 feature-report count."
+  ]
+}

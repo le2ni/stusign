@@ -1,0 +1,10 @@
+node_modules
+dist
+coverage
+examples/**/build
+pnpm-lock.yaml
+hardware-reports
+*stusign-stu540-*.json
+recordings
+signatures
+.stusign-docs-*

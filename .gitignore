@@ -1,0 +1,15 @@
+node_modules/
+dist/
+coverage/
+*.tgz
+.DS_Store
+examples/**/build/
+__pycache__/
+hardware-reports/
+*stusign-stu540-*.json
+recordings/
+signatures/
+.env
+.env.*
+!.env.example
+.stusign-docs-*/

@@ -1,0 +1,111 @@
+{
+  "name": "stusign",
+  "version": "0.1.0",
+  "description": "Typed Wacom STU device control, WebHID and Web Serial capture, image transfer and signature exports.",
+  "main": "./dist/index.mjs",
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "check": "pnpm format:check && pnpm typecheck && pnpm test && pnpm build && pnpm check:examples && pnpm check:docs && pnpm check:package",
+    "check:examples": "tsc -p tsconfig.examples.json",
+    "check:package": "node scripts/check-package.mjs",
+    "check:docs": "node scripts/check-docs.mjs",
+    "demo": "node scripts/hardware-server.mjs basic",
+    "hardware": "node scripts/hardware-server.mjs",
+    "prepack": "pnpm build",
+    "prepublishOnly": "pnpm check",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "keywords": [
+    "wacom",
+    "stu",
+    "webhid",
+    "webserial",
+    "signature",
+    "typescript"
+  ],
+  "license": "MIT",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.15.0",
+      "onFail": "error"
+    }
+  },
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "@vitest/coverage-v8": "^5.0.1",
+    "prettier": "^3.9.9",
+    "publint": "^0.3.24",
+    "tsdown": "^0.23.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.1"
+  },
+  "dependencies": {
+    "@noble/ciphers": "^2.4.0",
+    "fflate": "^0.8.3"
+  },
+  "types": "./dist/index.d.mts",
+  "sideEffects": false,
+  "files": [
+    "dist/*.mjs",
+    "dist/*.d.mts",
+    "dist/*.map",
+    "README.md",
+    "LICENSE",
+    "NOTICE",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "docs/*.md",
+    "docs/research/*.json",
+    "examples/basic/*.ts",
+    "examples/basic/*.html",
+    "scripts/stu-serial-to-hid.py"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./protocol": {
+      "types": "./dist/protocol.d.mts",
+      "import": "./dist/protocol.mjs"
+    },
+    "./webhid": {
+      "types": "./dist/webhid.d.mts",
+      "import": "./dist/webhid.mjs"
+    },
+    "./webserial": {
+      "types": "./dist/webserial.d.mts",
+      "import": "./dist/webserial.mjs"
+    },
+    "./capture": {
+      "types": "./dist/capture.d.mts",
+      "import": "./dist/capture.mjs"
+    },
+    "./render": {
+      "types": "./dist/render.d.mts",
+      "import": "./dist/render.mjs"
+    },
+    "./crypto": {
+      "types": "./dist/crypto.d.mts",
+      "import": "./dist/crypto.mjs"
+    },
+    "./testing": {
+      "types": "./dist/testing.d.mts",
+      "import": "./dist/testing.mjs"
+    }
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "packageManager": "pnpm@11.15.0"
+}

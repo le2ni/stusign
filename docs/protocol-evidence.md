@@ -1,0 +1,58 @@
+# Protocol evidence and implementation decisions
+
+Recorded **26 September 2026**, with serial maintenance evidence added **27 September 2026**. Library packet implementations are original TypeScript; the standalone Mac maintenance helper is original Python. Public references were inspected for wire facts and behavior; no Wacom SDK code or binaries are redistributed in this package.
+
+## Sources
+
+- [Wacom STU SDK overview](https://developer-docs.wacom.com/docs/stu-sdk/overview/) and [API guide](https://developer-docs.wacom.com/docs/stu-sdk/windows-sdk/api-guide/): architecture, supported operations, SDK prerequisites.
+- [Pinned public report enumeration](https://github.com/Wacom-Developer/stu-sdk-sigcaptx-samples/blob/52e5413992b47dde7287b8f13b6f8fbbf0a05620/samples/demobuttons/wgssStuSdk.js): 57 report IDs, directions, enums, mode configuration and model annotations.
+- [Wacom's historical browser protocol implementation](https://github.com/Wacom-Developer/signature-sdk-js/blob/d427fda472880b24fd01ebec5b2a774e0063e5ca/sigCaptDialog/libs/stu_capture/stu-sdk.min.js): report field offsets, widths, mixed endianness, image layouts and RSA protocol sequence. This is a protocol reference, not bundled implementation material.
+- [Native SDK samples](https://github.com/Wacom-Developer/stu-sdk-samples/tree/0749f46dd0b3d6f37c25adbbc7212c441a875af0), including `samples/c/simpleEncryptedTablet.c` and `samples/cpp/query.cpp`: independent workflow and status reference.
+- [Original project revision](https://github.com/netas-ch/Wacom-STU-WebHID/blob/a05400325efb2c51dc145e1c3c3e341fdaa46241/WacomStu540.js): earlier browser behavior and failure modes. No compatibility API is included.
+- [WebHID specification](https://wicg.github.io/webhid/): separate report IDs on writes/input, OS-dependent feature framing, permission lifecycle.
+- [Wacom brightness documentation](https://developer-support.wacom.com/hc/en-us/articles/9354506474135-How-can-I-switch-the-STU-off-when-not-in-use): 16-bit values, persistence and model differences.
+- [ROM store](https://developer-support.wacom.com/hc/en-us/articles/9354480514199-STU-540-ROM-Store-Configuration-and-Operation), [operating modes](https://developer-support.wacom.com/hc/en-us/articles/9354463720343-STU-540-Operating-Modes), and [PIN mode](https://developer-support.wacom.com/hc/en-us/articles/9354485837847-STU-540-PIN-Pad-Mode-Configuration): advanced feature semantics.
+- [tsdown documentation](https://tsdown.dev/guide/getting-started) and the installed 0.23.0 types: build configuration, multi-entry ESM and declarations.
+- [Mac serial-to-HID evidence](macos-serial-to-hid.md#protocol-evidence): Wacom converter provenance, seven-bit frame packing, CRC-16/ARC, GetReport/SetResult and a physically verified STU-540 firmware 1.8 conversion. The new [Web Serial implementation](web-serial.md#wire-implementation-and-recovery) uses those wire facts and the historical report-size collection layout, with separate software and hardware qualification.
+
+## Concrete wire decisions
+
+All offsets below exclude the report ID.
+
+| Report/area                               | Implemented interpretation                                                                                                                                                                          |
+| ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Information `0x08`                        | 16 bytes: nine model-name bytes, firmware major/minor at offsets 9/10, security IC at 11, four security-version bytes at 12–15.                                                                     |
+| Capability `0x09`                         | Ten-byte older layout or sixteen-byte extended layout. Coordinate/pressure/display maxima and resolution are big-endian; rate at 10, resolution at 11, encodings at 13.                             |
+| Status `0x03`                             | Four bytes: status, last result, big-endian status word.                                                                                                                                            |
+| Pen data                                  | Big-endian words; proximity bit 15, switches bits 12–14, pressure bits 0–11. Preserve the reported pressure maximum separately.                                                                     |
+| UID/session IDs                           | Big-endian 32-bit values.                                                                                                                                                                           |
+| Rectangles/thresholds/brightness/contrast | Little-endian 16-bit fields. Rectangles translate extents to lower-right coordinates.                                                                                                               |
+| Color settings                            | Little-endian packed color fields; distinct from image-buffer order.                                                                                                                                |
+| Mono images                               | MSB-first within each byte, white=1, rows independently padded white.                                                                                                                               |
+| RGB565 images                             | Big-endian pixel words.                                                                                                                                                                             |
+| BGR24 images                              | Blue, green, red bytes.                                                                                                                                                                             |
+| Image blocks                              | Little-endian valid-data byte count followed by bytes and descriptor padding. Never count padding as image content.                                                                                 |
+| OperationMode `0x93`                      | Mode byte plus eleven data bytes. Slideshow indexes are packed nibbles; interval is big-endian milliseconds.                                                                                        |
+| ROM descriptor `0x94`                     | Six bytes: encoding, mode, pressed-bit/slot, three mode-dependent fields.                                                                                                                           |
+| ROM hash `0x96`                           | Nineteen bytes: mode, pressed-bit/slot, result, sixteen hash bytes. Selector, readiness polling and read are serialized together. Wait through RomBusy after selecting; read only in Ready/Capture. |
+| ROM display `0x9b`                        | Two-byte mode/slot selector. Poll Ready before/after and check the result. Optional hash verification precedes display in the same queued transaction; no image blocks are sent.                    |
+| Boot screen `0x2f`                        | One-byte Disable/Enable flag.                                                                                                                                                                       |
+| EventData `0x99`                          | Nine-byte mode-specific envelope; PIN characters are packed nibbles.                                                                                                                                |
+| EncryptionCommand `0x40`                  | Command/parameter/length-or-index header plus up to 64 data bytes.                                                                                                                                  |
+| RSA session key                           | The AES key is the trailing key-sized bytes of OAEP plaintext; leading bytes are permitted by Wacom's native sample. Reject undersized blocks and clear the complete temporary plaintext.           |
+| Old encrypted pen                         | Session ID and two six-byte samples in one AES block. Option report adds two two-byte options outside that block.                                                                                   |
+| New encrypted pen `0x33`                  | Ten-byte timed/sequence sample, two reserved bytes, four-byte session ID, within one AES block.                                                                                                     |
+
+## Reference defects and unresolved points
+
+The historical browser reference contains defects, including a report-rate setter selecting DefaultMode, an undefined variable in a rendering-mode getter, and a current-image-area getter that ignores its returned buffer. StuSign uses the report enumeration and field layouts, with explicit tests, rather than preserving those implementations.
+
+The encrypted signature-event decoder has conflicting offsets in that reference. StuSign requires matching outer/inner modes and session ID for the common encrypted event envelope. Hardware or full-SDK fixtures are required before treating every encrypted UI variant as qualified.
+
+The ROM documentation disagrees on six versus ten message slots; this package uses six. Device MD5 hash input across image encodings remains a hardware test item. Four unresolved public report layouts are listed in [the support matrix](support-matrix.md); private report IDs and TLS packet formats remain unimplemented. Serial `0x80`/`0x81` envelopes and `0xff` discovery now have dedicated handlers. The 512-byte full `0xff` report uses big-endian sizes including IDs at offset `2 × reportId`, with entry zero reserved. See [the serial evidence](web-serial.md#wire-implementation-and-recovery) for provenance and physical qualification limits.
+
+The STU-540 descriptor also advertises **37 feature IDs outside the public catalogue**. The [dedicated report investigation](stu-540-extra-reports-research.md) records 15 candidate matches to fwupd's Wacom flash-loader protocol and 22 unresolved meanings, plus a separate unknown input report `0xb1`. Matching IDs and payload capacities are research evidence, not verified STU-540 serializers or an extension of the supported catalogue.
+
+`rom.storeImage()` uses documented BGR24 (`0x04`) with a full display-sized image and a plain slideshow/message descriptor. Hash result `1` permits provisioning an empty slot; result `0` requires explicit overwrite; other results reject. Post-commit hash readback confirms slot occupancy and supplies the returned identity, not a byte-for-byte image readback. The mock ROM uses synthetic revision hashes, not an implementation or validation of the device's MD5 rules. See [stored images](stored-images.md) for persistent storage and application-driven display.
+
+Most unit fixtures are hand-authored synthetic bytes representing documented fields. Serial framing additionally checks fixed independent native-converter vectors from the maintenance investigation, and report-size decoding tests the [captured STU-540 firmware 1.8 serial table](hardware-compatibility.md). Stream and service fixtures remain synthetic. Hardware results belong to a model/firmware/transport/browser/OS combination and are recorded separately in the [27 September STU-540 findings](hardware-compatibility.md), including the native-reference corrections for RSA key extraction and ROM readiness, and the [initial serial results](hardware-compatibility.md).
