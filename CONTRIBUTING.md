@@ -12,6 +12,8 @@ pnpm demo
 
 Source is in `src/`; `tsdown.config.ts` defines the ESM entry points. The root and transport declarations must stay usable without DOM types. Keep rendering and crypto implementation dependencies in their optional entry points.
 
+`pnpm test` and `pnpm test:coverage` work before building. Vitest resolves public `stusign` imports in examples to source entry points. Keep those aliases in sync when adding an export. The separate `check:package` script validates the compiled exports from an npm archive after building.
+
 `pnpm check` runs formatting, strict TypeScript, unit/integration tests, tsdown/publint, example type checks, README snippet compilation, documentation link checks in the repository and npm archive, and packed consumers under NodeNext and Bundler resolution. CI runs the same checks plus `python3 scripts/test-stu-serial-to-hid.py` for the optional Mac maintenance utility. These checks do not connect to hardware or publish anything.
 
 Use `pnpm format` before submitting changes. Add regression tests for protocol, state-machine, framing and crypto behavior; synthetic fixtures must be identified as such. Do not infer device support from a passing mock.
